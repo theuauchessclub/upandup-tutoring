@@ -527,7 +527,52 @@ function resultsScreen(){
   if(pct>=65)nextSteps.push("Once gaps are closed, we'll preview upcoming grade-level topics");
   nextSteps.push("A follow-up assessment after the first 4 sessions will measure progress and adjust the plan");
 
+  // Schedule recommendation based on deficit count
+  let schedFreq, schedLabel, schedDetail;
+  const needsSupportCount = B.areas.filter((_,ai)=>levelFor(perArea[ai].right,perArea[ai].total).cls==="l1").length;
+  const developingCount = B.areas.filter((_,ai)=>levelFor(perArea[ai].right,perArea[ai].total).cls==="l2").length;
+  const deficitScore = needsSupportCount * 2 + developingCount;
+
+  if(deficitScore >= 5 || pct < 50){
+    schedFreq = 3; schedLabel = "3 sessions per week";
+    schedDetail = "With multiple areas needing support, an intensive 3-day schedule (e.g. Monday / Wednesday / Friday, 4:00–5:00 PM) will build momentum and ensure consistent progress before the school year.";
+  } else if(deficitScore >= 2 || pct < 70){
+    schedFreq = 2; schedLabel = "2 sessions per week";
+    schedDetail = "With a few areas to strengthen, a 2-day schedule (e.g. Tuesday / Thursday, 4:00–5:00 PM) gives enough frequency to close gaps while leaving time for independent practice between sessions.";
+  } else {
+    schedFreq = 1; schedLabel = "1 session per week";
+    schedDetail = "With a strong foundation and only minor areas to refine, a weekly session (e.g. Wednesday, 4:00–5:00 PM) is enough to sharpen skills and preview upcoming content.";
+  }
+
+  nextSteps.push("Recommended schedule: " + schedLabel + " (Monday–Friday, 4:00–7:00 PM, virtual via Google Meet)");
+
   const today=new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+
+  // Build email report
+  const emailLines = [];
+  emailLines.push("ASSESSMENT REPORT — " + B.title);
+  emailLines.push("Student: " + state.name);
+  emailLines.push("Date: " + today);
+  emailLines.push("Score: " + total + " / " + qs.length + " (" + pct + "%)");
+  emailLines.push("Overall: " + verdict);
+  emailLines.push("");
+  emailLines.push("SKILL BREAKDOWN:");
+  B.areas.forEach((a,ai) => {
+    const r = perArea[ai], lvl = levelFor(r.right, r.total);
+    emailLines.push("  " + a.name + ": " + lvl.label + " (" + r.right + "/" + r.total + ")");
+    if(lvl.cls !== "l3" && r.missed.length > 0){
+      r.missed.forEach(m => emailLines.push("    • Missed: " + m));
+    }
+  });
+  emailLines.push("");
+  emailLines.push("RECOMMENDED SCHEDULE: " + schedLabel);
+  emailLines.push(schedDetail);
+  emailLines.push("");
+  emailLines.push("NEXT STEPS:");
+  nextSteps.forEach(s => emailLines.push("  → " + s));
+
+  // Send report to Brother Truth's email via Apps Script
+  sendReportEmail(state.name, grade, pct, verdict, emailLines.join("\n"));
 
   screen.innerHTML=`
     <div class="print-head"><h2>Up and Up Educational Services — ${B.title}</h2><p>Student: ${state.name} · Date: ${today}</p></div>
@@ -548,7 +593,20 @@ function resultsScreen(){
         ${isWeak&&r.missed.length?`<ul class="missed-list">${r.missed.map(m=>`<li>Missed: ${m}</li>`).join("")}</ul>`:""}
         ${isWeak?`<div style="margin-top:10px;font-size:.82rem;font-weight:700;color:var(--accent)">Recommended practice:</div><ul class="missed-list">${a.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}
       </div>`}).join("")}
-    <div class="plan"><h3>Tutoring Plan & Next Steps</h3><p>${detail}</p><ul class="next-steps">${nextSteps.map(s=>`<li>${s}</li>`).join("")}</ul></div>
+
+    <div class="plan"><h3>Recommended Tutoring Schedule</h3>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;color:var(--teal)">${schedFreq}x</span>
+        <span style="font-size:1rem;color:rgba(255,255,255,.85);font-weight:600">${schedLabel}</span>
+      </div>
+      <p>${schedDetail}</p>
+      <p style="margin-top:12px;font-size:.85rem;color:rgba(255,255,255,.6)">All sessions are 60 minutes, virtual via Google Meet, Monday–Friday between 4:00–7:00 PM Eastern.</p>
+    </div>
+
+    <div class="plan"><h3>Next Steps</h3><p>${detail}</p><ul class="next-steps">${nextSteps.map(s=>`<li>${s}</li>`).join("")}</ul></div>
+
+    <div id="email-status" style="text-align:center;font-size:.85rem;font-weight:600;color:var(--teal);margin-top:16px;min-height:1.4em" class="no-print"></div>
+
     <div class="resultbtns no-print">
       <button class="btn" id="printBtn">Print / Save Report</button>
       <button class="btn ghost sm" id="retakeBtn">Retake</button>
@@ -558,6 +616,32 @@ function resultsScreen(){
   document.getElementById("retakeBtn").addEventListener("click",()=>{if(confirm("Clear all answers?")){state={name:"",idx:0,answers:new Array(qs.length).fill(null),phase:"start"};startScreen()}});
   document.getElementById("gradeBtn").addEventListener("click",gradePickerScreen);
   window.scrollTo({top:0,behavior:"instant"});
+}
+
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMHiWO6YQmPQdlq2f9_YHSS-FWY-aKPbxitJcKrUS1_KXXFwjv37FI6c3fpqsfpOEI4Q/exec";
+
+async function sendReportEmail(studentName, gradeLevel, pct, verdict, reportText){
+  const statusEl = document.getElementById("email-status");
+  if(statusEl) statusEl.textContent = "Sending report to Brother Truth...";
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        action: "assessmentReport",
+        studentName: studentName,
+        gradeLevel: gradeLevel,
+        score: pct,
+        verdict: verdict,
+        report: reportText
+      })
+    });
+    if(resp.ok && statusEl) statusEl.textContent = "✓ Report sent to Brother Truth";
+    else if(statusEl) statusEl.textContent = "";
+  } catch(e){
+    console.error("Email send failed:", e);
+    if(statusEl) statusEl.textContent = "";
+  }
 }
 
 passwordScreen();
