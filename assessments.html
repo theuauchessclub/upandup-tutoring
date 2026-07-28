@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Up and Up Educational Services — Student Assessments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1526;--ink:#101827;--accent:#4f6df5;--accent2:#8b5cf6;
+  --teal:#2dd4bf;--teal-dark:#0d9488;--muted:#5b6472;--line:#e4e7ee;
+  --card:#ffffff;--paper:#f7f8fb;
+  --good:#10b981;--good-bg:#d1fae5;--warn:#f59e0b;--warn-bg:#fef3c7;
+  --weak:#ef4444;--weak-bg:#fee2e2;
+  --grad:linear-gradient(120deg,#4f6df5,#8b5cf6);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;
+  background-image:radial-gradient(600px 300px at 80% 15%,rgba(139,92,246,.18),transparent 70%),radial-gradient(500px 300px at 15% 85%,rgba(79,109,245,.14),transparent 70%);
+  display:flex;align-items:flex-start;justify-content:center;padding:24px 14px 60px;
+}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-.01em}
+.app{width:100%;max-width:700px}
+.brand{display:flex;align-items:center;gap:14px;color:#fff;margin:6px 4px 18px}
+.brand-mark{width:44px;height:44px;border-radius:12px;flex:0 0 auto;background:var(--grad);display:flex;align-items:center;justify-content:center}
+.brand-mark svg{width:20px;height:20px}
+.brand h1{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.1rem;line-height:1.2}
+.brand h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .sub{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-top:2px}
+.card{background:var(--card);border-radius:20px;box-shadow:0 20px 50px -20px rgba(0,0,0,.5);overflow:hidden}
+.card-inner{padding:32px 32px 36px}
+@media(max-width:520px){.card-inner{padding:22px 18px 26px}}
+.progress-bar{height:5px;background:var(--grad);display:flex}
+.progress-bar span{flex:1;background:var(--line)}
+.progress-bar span.done{background:var(--accent)}
+.progress-bar span.here{background:var(--teal)}
+.kicker{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.display{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;line-height:1.15;color:var(--ink);margin-bottom:16px}
+.display em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:1rem;line-height:1.65;margin-bottom:24px;max-width:54ch;color:var(--muted)}
+.skill-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.skill-chip{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:7px 16px 7px 10px;font-size:.82rem;font-weight:700;color:var(--ink)}
+.skill-chip .icon{width:26px;height:26px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+label.field{display:block;font-weight:700;font-size:.85rem;margin-bottom:6px;color:var(--ink)}
+input[type=text],input[type=password]{width:100%;padding:14px 16px;font:inherit;font-weight:600;border:1px solid var(--line);border-radius:12px;background:var(--paper);margin-bottom:20px;color:var(--ink);font-size:.95rem}
+input:focus{outline:3px solid rgba(79,109,245,.4);border-color:var(--accent)}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;border:none;border-radius:99px;cursor:pointer;padding:14px 28px;background:var(--grad);color:#fff;box-shadow:0 8px 24px -8px rgba(99,102,241,.55);transition:transform .1s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(2px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:none;border:1px solid var(--line);font-family:'Inter',sans-serif;font-weight:700;font-size:.92rem}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn.sm{padding:10px 20px;font-size:.9rem}
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px;flex-wrap:wrap}
+.area-tag{display:inline-flex;align-items:center;gap:8px;background:var(--bg);color:#fff;border-radius:99px;padding:6px 16px 6px 8px;font-size:.8rem;font-weight:700}
+.area-tag .ti{width:24px;height:24px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.qcount{font-size:.82rem;font-weight:700;color:var(--muted)}
+.qtext{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:600;line-height:1.4;margin-bottom:22px;color:var(--ink)}
+.choices{display:grid;gap:10px;margin-bottom:28px}
+.choice{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;font-weight:600;font-size:1.02rem;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:15px 18px;cursor:pointer;color:var(--ink);transition:border-color .1s ease,background .1s ease}
+.choice:hover{border-color:var(--accent);background:#f0f2ff}
+.choice .key{width:32px;height:32px;flex:0 0 auto;border-radius:10px;background:var(--line);color:var(--muted);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
+.choice.picked{background:var(--bg);border-color:var(--accent);color:#fff}
+.choice.picked .key{background:var(--grad);color:#fff}
+.navrow{display:flex;justify-content:space-between;gap:12px}
+.score-hero{text-align:center;padding:8px 0 28px}
+.score-hero .big{font-family:'Space Grotesk',sans-serif;font-size:3.6rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.score-hero .of{font-weight:700;font-size:.95rem;color:var(--muted);margin-top:4px}
+.verdict{display:inline-block;margin-top:14px;background:var(--bg);color:var(--teal);font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:8px 22px}
+.report-section{margin:28px 0 12px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink)}
+.area-result{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:12px}
+.area-result .top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.area-result .nm{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem}
+.area-result .nm .ai{width:32px;height:32px;border-radius:10px;flex:0 0 auto;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.lvl{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:5px 14px}
+.lvl.l3{background:var(--good-bg);color:#065f46}
+.lvl.l2{background:var(--warn-bg);color:#92400e}
+.lvl.l1{background:var(--weak-bg);color:#991b1b}
+.meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:10px}
+.meter i{display:block;height:100%;border-radius:99px;transition:width .6s ease}
+.meter i.strong{background:var(--good)}.meter i.mid{background:var(--warn)}.meter i.low{background:var(--weak)}
+.area-note{font-size:.88rem;line-height:1.55;color:var(--muted)}
+.missed-list{font-size:.85rem;color:var(--muted);margin-top:8px;padding-left:18px;line-height:1.6}
+.plan{background:var(--bg);color:#fff;border-radius:16px;padding:22px 24px;margin:24px 0 8px;position:relative;overflow:hidden}
+.plan::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 90% 10%,rgba(139,92,246,.25),transparent 70%);pointer-events:none}
+.plan>*{position:relative}
+.plan h3{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;color:var(--teal);margin-bottom:10px}
+.plan p{font-size:.92rem;line-height:1.65;color:rgba(255,255,255,.85)}
+.plan .next-steps{margin-top:14px;list-style:none}
+.plan .next-steps li{padding:6px 0;font-size:.9rem;color:rgba(255,255,255,.8);display:flex;gap:10px;align-items:flex-start}
+.plan .next-steps li::before{content:"→";color:var(--teal);font-weight:700;flex-shrink:0}
+.resultbtns{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.footer-note{text-align:center;color:rgba(255,255,255,.5);font-size:.75rem;font-weight:600;margin-top:18px;letter-spacing:.04em}
+/* grade picker */
+.grade-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.grade-card{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;padding:20px;cursor:pointer;transition:border-color .1s,transform .1s;text-align:center}
+.grade-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.grade-card .g-num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.8rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grade-card .g-label{font-size:.82rem;font-weight:700;color:var(--muted);margin-top:4px}
+.grade-card .g-sub{font-size:.75rem;color:var(--muted);margin-top:6px;line-height:1.4}
+.pw-error{color:var(--weak);font-size:.88rem;font-weight:600;margin-bottom:12px;min-height:1.2em}
+@media(max-width:520px){.grade-grid{grid-template-columns:1fr}}
+@media print{
+  body{background:#fff;padding:0;display:block}
+  .brand,.progress-bar,.footer-note,.resultbtns,.no-print{display:none!important}
+  .card{box-shadow:none;border-radius:0}.card-inner{padding:10px 0}
+  .print-head{display:block!important;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:16px}
+  .area-result{break-inside:avoid}
+  .plan{background:#f0f2ff!important;color:var(--ink)!important}
+  .plan::before{display:none}.plan h3{color:var(--accent)!important}
+  .plan p,.plan .next-steps li{color:var(--ink)!important}
+}
+.print-head{display:none}
+.print-head h2{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--ink);font-size:1.3rem}
+.print-head p{font-size:.85rem;font-weight:600;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="brand">
+    <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 18 L10 11 L14 14 L20 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 6 H20 V11" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><h1>Up and Up <span>Educational Services</span></h1><div class="sub">Student Assessments</div></div>
+  </div>
+  <div class="card">
+    <div class="progress-bar" id="pbar" aria-hidden="true"></div>
+    <div class="card-inner" id="screen"></div>
+  </div>
+  <div class="footer-note">Up and Up Educational Services · Virtual Math Tutoring · Grades 6–11</div>
+</div>
+
+<script>
+/* ===================== PASSWORD ===================== */
+const PASS = "UpAndUp2026";
+
+/* ===================== QUESTION BANKS ===================== */
+const BANKS = {
+6:{
+  title:"6th Grade Readiness Assessment",
+  subtitle:"Rising 6th Graders",
+  tests:"5th-grade math skills",
+  areas:[
+    {id:"pv",icon:"#",name:"Place Value & Operations",strong:"Whole-number operations and place value are locked in.",weak:"Multi-digit computation and powers of 10 need targeted practice.",tips:["Practice multi-digit multiplication and long division daily","Review powers of 10 through the millions","Use estimation to check computation"]},
+    {id:"fr",icon:"½",name:"Fractions",strong:"Fraction operations look solid — the strongest predictor of middle school success.",weak:"Fraction operations need focused attention — the highest-priority area for 6th-grade readiness.",tips:["Add and subtract fractions with unlike denominators","Multiply fractions by whole numbers and fractions","Divide with unit fractions using visual models"]},
+    {id:"dc",icon:".0",name:"Decimals",strong:"Decimal computation and comparison are in good shape.",weak:"Decimal operations need strengthening for ratio and percent work ahead.",tips:["Add and subtract decimals with regrouping","Multiply and divide decimals","Compare and order decimals to thousandths"]},
+    {id:"gm",icon:"△",name:"Geometry & Measurement",strong:"Volume, coordinates, and conversions look strong.",weak:"Volume, coordinate plane, and unit conversions need review.",tips:["Calculate volume of rectangular prisms","Plot points on the coordinate plane","Convert between metric units"]},
+    {id:"wp",icon:"?!",name:"Problem Solving",strong:"Multi-step reasoning and early ratio thinking are strong.",weak:"Multi-step problems and proportional reasoning need development.",tips:["Break word problems into smaller parts","Identify rate/ratio relationships","Review order of operations"]}
+  ],
+  questions:[
+    {a:0,q:"What is the value of the digit 7 in 3,724,891?",c:["7,000","70,000","700,000","7,000,000"],k:2},
+    {a:0,q:"What is 10³?",c:["30","100","300","1,000"],k:3},
+    {a:0,q:"356 × 47 = ?",c:["16,732","15,932","16,432","14,732"],k:0},
+    {a:0,q:"4,608 ÷ 24 = ?",c:["182","192","202","212"],k:1},
+    {a:0,q:"Round 45.678 to the nearest tenth.",c:["45.6","45.68","45.7","46"],k:2},
+    {a:1,q:"2⁄3 + 1⁄4 = ?",c:["3⁄7","11⁄12","3⁄12","5⁄6"],k:1},
+    {a:1,q:"3 1⁄2 − 1 3⁄4 = ?",c:["2 1⁄4","1 1⁄2","1 3⁄4","2 3⁄4"],k:2},
+    {a:1,q:"4⁄5 × 10 = ?",c:["8","40⁄50","2","10 4⁄5"],k:0},
+    {a:1,q:"1⁄2 ÷ 4 = ?",c:["2","1⁄4","1⁄8","4 1⁄2"],k:2},
+    {a:1,q:"Three friends share 2 pizzas equally. How much does each get?",c:["1⁄3 pizza","2⁄3 pizza","3⁄2 pizzas","1⁄2 pizza"],k:1},
+    {a:2,q:"3.6 + 2.75 = ?",c:["5.35","6.35","6.11","5.81"],k:1},
+    {a:2,q:"5 − 1.28 = ?",c:["4.28","3.82","4.72","3.72"],k:3},
+    {a:2,q:"0.4 × 0.3 = ?",c:["1.2","0.12","0.7","0.012"],k:1},
+    {a:2,q:"2.4 ÷ 0.6 = ?",c:["0.4","4","40","0.04"],k:1},
+    {a:2,q:"Which is the largest? 0.65, 0.605, 0.7, 0.099",c:["0.65","0.605","0.7","0.099"],k:2},
+    {a:3,q:"Volume of a 4 × 3 × 5 box?",c:["12 cu units","60 cu units","47 cu units","35 cu units"],k:1},
+    {a:3,q:"To plot (3, 5) you move…",c:["3 up, 5 right","5 right, 3 up","3 right, 5 up","3 right, 5 down"],k:2},
+    {a:3,q:"3.5 meters = ? centimeters",c:["35","350","3,500","0.35"],k:1},
+    {a:3,q:"Area = 24 ft², width = 4 ft. Length?",c:["6 ft","8 ft","20 ft","96 ft"],k:0},
+    {a:3,q:"True or false: a square is always a rectangle.",c:["True","False","Only sometimes","Only if tilted"],k:0},
+    {a:4,q:"3 notebooks at $2.45 each, pay with $10. Change?",c:["$7.55","$2.65","$3.65","$2.35"],k:1},
+    {a:4,q:"2 cups flour makes 3 batches. Cups for 12 batches?",c:["6","8","12","24"],k:1},
+    {a:4,q:"5 pencils cost $1.25. Price of 1?",c:["$0.20","$0.25","$0.31","$1.20"],k:1},
+    {a:4,q:"Pattern: 3, 7, 11, 15, … Next?",c:["17","18","19","21"],k:2},
+    {a:4,q:"2 + 3 × 4 = ?",c:["20","14","24","9"],k:1}
+  ]
+},
+7:{
+  title:"7th Grade Readiness Assessment",
+  subtitle:"Rising 7th Graders",
+  tests:"6th-grade math skills",
+  areas:[
+    {id:"rp",icon:":",name:"Ratios & Proportions",strong:"Ratio reasoning and unit rates are solid — ready for proportional relationships in 7th grade.",weak:"Ratio reasoning needs strengthening — this is the central theme of 7th-grade math.",tips:["Practice writing and simplifying ratios","Find unit rates from tables and word problems","Use ratio tables to solve proportion problems"]},
+    {id:"ns",icon:"±",name:"The Number System",strong:"Integer and rational number operations are in good shape.",weak:"Operations with negative numbers and rational numbers need focused work.",tips:["Practice adding, subtracting, multiplying integers","Place negative numbers and fractions on number lines","Convert between fractions, decimals, and percents"]},
+    {id:"ee",icon:"x=",name:"Expressions & Equations",strong:"Algebraic expressions and one-step equations look strong.",weak:"Writing and solving expressions and equations need more practice.",tips:["Write expressions from word descriptions","Solve one-step equations with all operations","Use the distributive property to simplify"]},
+    {id:"gm",icon:"△",name:"Geometry",strong:"Area and volume skills are well-developed.",weak:"Area, surface area, and volume concepts need reinforcement.",tips:["Find area of triangles and special quadrilaterals","Calculate surface area of rectangular prisms","Practice decomposing composite shapes"]},
+    {id:"sp",icon:"📊",name:"Statistics & Probability",strong:"Data analysis and statistical thinking are strong.",weak:"Interpreting data displays and understanding variability need work.",tips:["Calculate mean, median, mode, and range","Read and interpret dot plots, histograms, box plots","Describe the shape and spread of data sets"]}
+  ],
+  questions:[
+    {a:0,q:"A recipe calls for 3 cups of flour for every 2 cups of sugar. How much flour for 8 cups of sugar?",c:["6 cups","10 cups","12 cups","16 cups"],k:2},
+    {a:0,q:"What is the unit rate if 5 apples cost $3.75?",c:["$0.65","$0.75","$1.25","$1.33"],k:1},
+    {a:0,q:"A map scale is 1 inch = 50 miles. Two cities are 3.5 inches apart. Actual distance?",c:["150 miles","175 miles","200 miles","350 miles"],k:1},
+    {a:0,q:"24 out of 40 students play sports. What percent?",c:["40%","55%","60%","65%"],k:2},
+    {a:0,q:"A shirt costs $25 and is 20% off. Sale price?",c:["$5","$15","$20","$22"],k:2},
+    {a:1,q:"−8 + 5 = ?",c:["−13","−3","3","13"],k:1},
+    {a:1,q:"Which is greatest: −3, −7, 0, −1?",c:["−3","−7","0","−1"],k:2},
+    {a:1,q:"What is the absolute value of −12?",c:["−12","0","12","24"],k:2},
+    {a:1,q:"Convert 3⁄8 to a decimal.",c:["0.38","0.375","0.83","3.8"],k:1},
+    {a:1,q:"Which point is at −2.5 on a number line?",c:["Between −3 and −2","Between −2 and −1","Between 2 and 3","At −2"],k:0},
+    {a:2,q:"Write an expression: 'five less than twice a number n'",c:["5 − 2n","2n − 5","2(n − 5)","5n − 2"],k:1},
+    {a:2,q:"Solve: x + 14 = 32",c:["x = 18","x = 46","x = 16","x = 22"],k:0},
+    {a:2,q:"Simplify: 3(2x + 4)",c:["6x + 4","5x + 7","6x + 12","6x + 7"],k:2},
+    {a:2,q:"Solve: n⁄6 = 9",c:["n = 3","n = 15","n = 54","n = 1.5"],k:2},
+    {a:2,q:"Are 2x + 3 and 3 + 2x equivalent?",c:["Yes, always","Only when x = 0","No, never","Only for positive x"],k:0},
+    {a:3,q:"Area of a triangle: base = 10, height = 6?",c:["16","30","60","100"],k:1},
+    {a:3,q:"A rectangular prism is 5 × 4 × 3. Volume?",c:["12","36","48","60"],k:3},
+    {a:3,q:"Perimeter of a rectangle: length 8, width 5?",c:["13","26","40","80"],k:1},
+    {a:3,q:"Surface area of a cube with side = 3?",c:["9","27","36","54"],k:3},
+    {a:3,q:"A trapezoid has bases 6 and 10, height 4. Area?",c:["24","32","40","64"],k:1},
+    {a:4,q:"Mean of: 4, 7, 10, 3, 6?",c:["5","6","7","10"],k:1},
+    {a:4,q:"Median of: 12, 5, 8, 15, 3?",c:["5","8","9","12"],k:1},
+    {a:4,q:"Range of: 22, 14, 31, 18, 25?",c:["14","17","22","31"],k:1},
+    {a:4,q:"A dot plot shows test scores. Most dots cluster at 85. This is the…",c:["range","median","mode","mean"],k:2},
+    {a:4,q:"Which measure of center is most affected by outliers?",c:["Mode","Median","Mean","Range"],k:2}
+  ]
+},
+8:{
+  title:"8th Grade Readiness Assessment",
+  subtitle:"Rising 8th Graders",
+  tests:"7th-grade math skills",
+  areas:[
+    {id:"pr",icon:"%",name:"Proportions & Percents",strong:"Proportional reasoning and percent applications are solid.",weak:"Proportional reasoning and percent calculations need strengthening.",tips:["Solve percent increase/decrease problems","Set up and solve proportions","Identify proportional vs non-proportional relationships"]},
+    {id:"rn",icon:"±",name:"Rational Number Operations",strong:"Operations with rational numbers are well-developed.",weak:"Computing with negative fractions and decimals needs focused practice.",tips:["Multiply and divide negative rational numbers","Add and subtract mixed numbers with negatives","Convert between fraction, decimal, and percent forms"]},
+    {id:"ee",icon:"x=",name:"Expressions & Equations",strong:"Two-step equations and inequalities look strong.",weak:"Multi-step equations and inequalities need more practice.",tips:["Solve two-step equations","Graph solutions to inequalities on number lines","Write and solve equations from word problems"]},
+    {id:"gm",icon:"∠",name:"Geometry",strong:"Angle relationships and circle calculations are in good shape.",weak:"Angle relationships, circles, and area of composite shapes need review.",tips:["Find missing angles using supplementary/complementary relationships","Calculate circumference and area of circles","Find area of composite shapes"]},
+    {id:"sp",icon:"📊",name:"Statistics & Probability",strong:"Probability and statistical inference skills are strong.",weak:"Probability calculations and data inference need development.",tips:["Calculate simple and compound probability","Draw inferences from random samples","Compare two data sets using measures of center and variability"]}
+  ],
+  questions:[
+    {a:0,q:"A store marks up items 40%. Cost is $15. Selling price?",c:["$6","$19","$21","$55"],k:2},
+    {a:0,q:"A population drops from 500 to 425. Percent decrease?",c:["15%","25%","75%","85%"],k:0},
+    {a:0,q:"y = 3x. Is this proportional?",c:["Yes","No","Only for positive x","Only if x is whole"],k:0},
+    {a:0,q:"Tax is 8%. Item costs $50. Total with tax?",c:["$4","$54","$58","$40"],k:1},
+    {a:0,q:"15 is what percent of 60?",c:["4%","15%","25%","40%"],k:2},
+    {a:1,q:"−3 × (−7) = ?",c:["−21","21","−10","10"],k:1},
+    {a:1,q:"−5⁄6 + 1⁄3 = ?",c:["−4⁄6","−1⁄2","−1⁄3","1⁄2"],k:1},
+    {a:1,q:"−12 ÷ (−4) = ?",c:["−3","3","−8","8"],k:1},
+    {a:1,q:"Convert −0.75 to a fraction.",c:["−7⁄5","−3⁄4","−75⁄10","−7⁄50"],k:1},
+    {a:1,q:"−2.5 + 4.3 = ?",c:["1.8","−1.8","6.8","−6.8"],k:0},
+    {a:2,q:"Solve: 3x + 7 = 22",c:["x = 5","x = 9.67","x = 29","x = 4"],k:0},
+    {a:2,q:"Solve: 2(n − 4) = 10",c:["n = 3","n = 7","n = 9","n = 14"],k:2},
+    {a:2,q:"Which is the solution to x⁄4 + 3 > 5?",c:["x > 2","x > 8","x > 32","x < 8"],k:1},
+    {a:2,q:"Write an equation: 'A number doubled, then decreased by 6, equals 14'",c:["2n − 6 = 14","2(n − 6) = 14","n² − 6 = 14","6 − 2n = 14"],k:0},
+    {a:2,q:"Solve: −4x = 28",c:["x = 7","x = −7","x = 32","x = −32"],k:1},
+    {a:3,q:"Two angles are supplementary. One is 65°. The other?",c:["25°","65°","115°","125°"],k:2},
+    {a:3,q:"Circumference of a circle with radius 7? (Use π ≈ 3.14)",c:["21.98","43.96","153.86","49"],k:1},
+    {a:3,q:"Area of a circle with radius 5? (Use π ≈ 3.14)",c:["15.7","31.4","78.5","157"],k:2},
+    {a:3,q:"A triangle has angles 45° and 90°. Third angle?",c:["25°","45°","90°","135°"],k:1},
+    {a:3,q:"Vertical angles are always…",c:["Supplementary","Complementary","Equal","Adjacent"],k:2},
+    {a:4,q:"A coin is flipped twice. P(two heads)?",c:["1⁄2","1⁄3","1⁄4","1⁄8"],k:2},
+    {a:4,q:"A bag has 3 red, 5 blue, 2 green marbles. P(blue)?",c:["1⁄5","3⁄10","1⁄2","5⁄8"],k:2},
+    {a:4,q:"30 out of 50 surveyed prefer pizza. Predict for 200 students?",c:["60","100","120","150"],k:2},
+    {a:4,q:"Two data sets have means of 72 and 85. Which performed better on average?",c:["The set with mean 72","The set with mean 85","Can't tell without seeing the data","They performed equally"],k:1},
+    {a:4,q:"An event has P = 0. This means…",c:["It's certain","It's likely","It's unlikely","It's impossible"],k:3}
+  ]
+},
+9:{
+  title:"9th Grade Readiness Assessment",
+  subtitle:"Rising 9th Graders · Pre-Algebra / Algebra I Prep",
+  tests:"8th-grade and Pre-Algebra skills",
+  areas:[
+    {id:"le",icon:"↗",name:"Linear Equations & Slope",strong:"Linear equations and slope concepts are well-understood.",weak:"Linear equations, slope, and graphing need focused practice before Algebra I.",tips:["Find slope from two points and from graphs","Write equations in slope-intercept form","Graph linear equations by plotting points"]},
+    {id:"fn",icon:"f(x)",name:"Functions",strong:"Function concepts and input-output reasoning are solid.",weak:"Understanding functions, domain/range, and function notation needs work.",tips:["Determine if a relation is a function","Identify domain and range from tables and graphs","Evaluate simple function notation"]},
+    {id:"ex",icon:"x²",name:"Exponents & Scientific Notation",strong:"Exponent rules and scientific notation are well-developed.",weak:"Exponent laws and scientific notation need more practice.",tips:["Apply product, quotient, and power rules for exponents","Convert between standard and scientific notation","Compute with numbers in scientific notation"]},
+    {id:"gm",icon:"△",name:"Geometry & Pythagorean Theorem",strong:"Pythagorean theorem and transformation skills look strong.",weak:"The Pythagorean theorem, transformations, and volume formulas need review.",tips:["Apply the Pythagorean theorem to find missing sides","Identify and perform translations, rotations, reflections","Calculate volume of cylinders, cones, and spheres"]},
+    {id:"ds",icon:"📊",name:"Data & Statistics",strong:"Scatter plot analysis and association skills are solid.",weak:"Reading scatter plots and understanding association patterns need development.",tips:["Describe trends in scatter plots","Identify positive, negative, and no association","Use a line of best fit to make predictions"]}
+  ],
+  questions:[
+    {a:0,q:"What is the slope of a line through (2, 3) and (6, 11)?",c:["1⁄2","2","4","8"],k:1},
+    {a:0,q:"In y = 3x − 5, what is the y-intercept?",c:["3","−5","5","−3"],k:1},
+    {a:0,q:"Solve: 5x − 3 = 2x + 9",c:["x = 2","x = 4","x = 6","x = −4"],k:1},
+    {a:0,q:"A line has slope 0. It is…",c:["Vertical","Horizontal","Diagonal","Undefined"],k:1},
+    {a:0,q:"Which equation represents a line through (0, 4) with slope −2?",c:["y = 4x − 2","y = −2x + 4","y = 2x + 4","y = −2x − 4"],k:1},
+    {a:1,q:"Is {(1,3), (2,5), (3,3), (1,7)} a function?",c:["Yes","No","Only if graphed","Depends on context"],k:1},
+    {a:1,q:"f(x) = 2x + 1. Find f(4).",c:["5","7","9","10"],k:2},
+    {a:1,q:"Which graph passes the vertical line test?",c:["A circle","A parabola opening up","A sideways parabola","A figure-eight"],k:1},
+    {a:1,q:"A function's domain is…",c:["All output values","All input values","The slope","The y-intercept"],k:1},
+    {a:1,q:"A linear function increases by 3 for every 1 unit of x. Its rate of change is…",c:["1⁄3","1","3","−3"],k:2},
+    {a:2,q:"Simplify: x³ · x⁴",c:["x⁷","x¹²","x⁴³","2x⁷"],k:0},
+    {a:2,q:"What is 3.2 × 10⁴ in standard form?",c:["320","3,200","32,000","320,000"],k:2},
+    {a:2,q:"Simplify: (2³)²",c:["2⁵","2⁶","4⁶","2⁹"],k:1},
+    {a:2,q:"Write 0.00056 in scientific notation.",c:["5.6 × 10⁴","56 × 10⁻⁵","5.6 × 10⁻⁴","0.56 × 10⁻³"],k:2},
+    {a:2,q:"x⁵ ÷ x² = ?",c:["x³","x⁷","x²·⁵","x¹⁰"],k:0},
+    {a:3,q:"A right triangle has legs 3 and 4. Hypotenuse?",c:["5","6","7","12"],k:0},
+    {a:3,q:"A triangle is reflected over the y-axis. What changes?",c:["The y-coordinates","The x-coordinates","Both coordinates","The shape"],k:1},
+    {a:3,q:"Volume of a cylinder: radius 3, height 10? (Use π ≈ 3.14)",c:["94.2","188.4","282.6","30"],k:2},
+    {a:3,q:"Is a triangle with sides 5, 12, 13 a right triangle?",c:["Yes","No","Only sometimes","Need more info"],k:0},
+    {a:3,q:"A shape is translated 3 units right, 2 up. Which changes?",c:["Size only","Position only","Shape and size","Orientation only"],k:1},
+    {a:4,q:"A scatter plot trends upward left to right. The association is…",c:["Negative","Positive","No association","Non-linear"],k:1},
+    {a:4,q:"A line of best fit predicts y = 50 when x = 10. The actual value is 47. Residual?",c:["3","−3","97","50"],k:1},
+    {a:4,q:"Two variables show no pattern in a scatter plot. They have…",c:["Positive association","Negative association","No association","Perfect correlation"],k:2},
+    {a:4,q:"Which is NOT a way to display bivariate data?",c:["Scatter plot","Two-way table","Line of best fit","Stem-and-leaf plot"],k:3},
+    {a:4,q:"As study hours increase, grades tend to increase. This is…",c:["Causation only","Negative correlation","Positive correlation","No relationship"],k:2}
+  ]
+},
+10:{
+  title:"10th Grade Readiness Assessment",
+  subtitle:"Rising 10th Graders · Geometry Prep",
+  tests:"Algebra I skills",
+  areas:[
+    {id:"lf",icon:"↗",name:"Linear Functions & Inequalities",strong:"Linear functions, graphing, and inequalities are well-mastered.",weak:"Linear functions and inequality solving need reinforcement before Geometry.",tips:["Graph linear equations and inequalities","Write equations from slope and a point","Solve and graph compound inequalities"]},
+    {id:"sy",icon:"{ }",name:"Systems of Equations",strong:"Solving systems by multiple methods is solid.",weak:"Systems of equations need more practice — these appear in Geometry proofs and applications.",tips:["Solve systems by graphing, substitution, and elimination","Identify systems with no solution or infinite solutions","Write systems from word problems"]},
+    {id:"po",icon:"x²",name:"Polynomials & Factoring",strong:"Polynomial operations and factoring are strong.",weak:"Polynomial multiplication and factoring need focused work.",tips:["Multiply binomials (FOIL) and polynomials","Factor trinomials and difference of squares","Factor out the GCF from expressions"]},
+    {id:"qd",icon:"∪",name:"Quadratic Functions",strong:"Quadratic concepts and solving methods are well-developed.",weak:"Quadratic functions, graphing parabolas, and solving quadratics need work.",tips:["Identify vertex, axis of symmetry, and direction of opening","Solve quadratics by factoring and the quadratic formula","Relate graphs to equations"]},
+    {id:"ef",icon:"2ⁿ",name:"Exponential Functions",strong:"Exponential growth/decay and sequences are in good shape.",weak:"Exponential functions and sequences need development.",tips:["Distinguish linear from exponential growth","Write and evaluate exponential functions","Identify arithmetic and geometric sequences"]}
+  ],
+  questions:[
+    {a:0,q:"Slope of a line through (−1, 4) and (3, −2)?",c:["1⁄2","−3⁄2","2","−2"],k:1},
+    {a:0,q:"Solve: 4(x − 2) ≥ 12",c:["x ≥ 1","x ≥ 5","x ≤ 5","x ≥ 7"],k:1},
+    {a:0,q:"Write the equation of a line with slope 3 through (1, 5).",c:["y = 3x + 2","y = 3x + 5","y = 5x + 3","y = 3x − 2"],k:0},
+    {a:0,q:"Two parallel lines have…",c:["Same slope","Opposite slopes","Perpendicular slopes","No slope"],k:0},
+    {a:0,q:"y = −x + 4. The x-intercept is…",c:["(0, 4)","(4, 0)","(−4, 0)","(0, −4)"],k:1},
+    {a:1,q:"Solve: y = 2x + 1 and y = −x + 7",c:["(2, 5)","(3, 4)","(4, 3)","(1, 3)"],k:0},
+    {a:1,q:"A system has the same line twice. Solutions?",c:["No solution","Exactly one","Exactly two","Infinitely many"],k:3},
+    {a:1,q:"Solve by elimination: 2x + y = 10, x − y = 2",c:["(4, 2)","(3, 4)","(2, 6)","(6, −2)"],k:0},
+    {a:1,q:"Two lines intersect at one point. The system is…",c:["Inconsistent","Dependent","Independent","Undefined"],k:2},
+    {a:1,q:"Solve: x + y = 8, x − y = 2",c:["(3, 5)","(5, 3)","(4, 4)","(6, 2)"],k:1},
+    {a:2,q:"Expand: (x + 3)(x − 5)",c:["x² − 2x − 15","x² + 2x − 15","x² − 8x − 15","x² − 2x + 15"],k:0},
+    {a:2,q:"Factor: x² + 7x + 12",c:["(x+2)(x+6)","(x+3)(x+4)","(x+1)(x+12)","(x+6)(x+2)"],k:1},
+    {a:2,q:"Factor: x² − 25",c:["(x−5)²","(x+5)(x−5)","(x−25)(x+1)","Cannot factor"],k:1},
+    {a:2,q:"Simplify: (3x²)(4x³)",c:["7x⁵","12x⁵","12x⁶","7x⁶"],k:1},
+    {a:2,q:"GCF of 6x³ + 9x²?",c:["3x","3x²","6x²","9x³"],k:1},
+    {a:3,q:"Vertex of y = (x − 3)² + 2?",c:["(3, 2)","(−3, 2)","(3, −2)","(2, 3)"],k:0},
+    {a:3,q:"A parabola opens downward when…",c:["a > 0","a < 0","a = 0","b < 0"],k:1},
+    {a:3,q:"Solve: x² − 9 = 0",c:["x = 3 only","x = −3 only","x = 3 or x = −3","x = 9"],k:2},
+    {a:3,q:"The discriminant is negative. The quadratic has…",c:["Two real solutions","One real solution","No real solutions","Infinite solutions"],k:2},
+    {a:3,q:"Axis of symmetry for y = x² − 6x + 5?",c:["x = −3","x = 3","x = 5","x = −6"],k:1},
+    {a:4,q:"f(x) = 2·3ˣ. Find f(2).",c:["6","12","18","36"],k:2},
+    {a:4,q:"A population doubles every year from 100. After 3 years?",c:["300","400","600","800"],k:3},
+    {a:4,q:"Which is exponential? y = 3x + 1, y = 3·2ˣ, y = x², y = 3/x",c:["y = 3x + 1","y = 3·2ˣ","y = x²","y = 3/x"],k:1},
+    {a:4,q:"Geometric sequence: 4, 12, 36, … Common ratio?",c:["2","3","8","9"],k:1},
+    {a:4,q:"A car loses 15% of its value each year. This models…",c:["Linear growth","Exponential growth","Exponential decay","Quadratic growth"],k:2}
+  ]
+},
+11:{
+  title:"11th Grade Readiness Assessment",
+  subtitle:"Rising 11th Graders · Geometry Skills Check",
+  tests:"Geometry skills",
+  areas:[
+    {id:"gf",icon:"∴",name:"Geometric Foundations & Reasoning",strong:"Logical reasoning and proof structure are well-understood.",weak:"Proof reasoning and geometric definitions need reinforcement.",tips:["Practice identifying postulates vs theorems","Write two-column proofs for simple angle relationships","Review conditional statements and their converses"]},
+    {id:"cs",icon:"∼",name:"Congruence & Similarity",strong:"Triangle congruence and similarity are solid.",weak:"Congruence criteria and similarity reasoning need focused work.",tips:["Apply SSS, SAS, ASA, AAS congruence criteria","Use AA similarity to find missing sides","Set up and solve proportions from similar figures"]},
+    {id:"rt",icon:"⊿",name:"Right Triangles & Trigonometry",strong:"Pythagorean theorem and basic trig ratios are strong.",weak:"Trigonometric ratios and right triangle applications need development.",tips:["Define and calculate sine, cosine, and tangent","Solve for missing sides and angles in right triangles","Apply trig to real-world problems"]},
+    {id:"ci",icon:"◯",name:"Circles",strong:"Circle properties, arcs, and angles are well-mastered.",weak:"Circle theorems, arc measures, and sector calculations need review.",tips:["Calculate arc length and sector area","Apply inscribed angle and central angle theorems","Use the relationship between tangent lines and radii"]},
+    {id:"av",icon:"▣",name:"Area, Volume & Modeling",strong:"Surface area, volume, and geometric modeling skills are strong.",weak:"Volume and surface area formulas for complex solids need practice.",tips:["Calculate volume of prisms, pyramids, cylinders, cones, spheres","Find surface area of composite solids","Apply geometric modeling to real-world contexts"]}
+  ],
+  questions:[
+    {a:0,q:"If P → Q is true and P is true, then…",c:["Q is true","Q is false","P is false","Nothing follows"],k:0},
+    {a:0,q:"The converse of 'If it rains, the ground is wet' is…",c:["If it doesn't rain, ground is dry","If ground is wet, it rained","If ground is dry, it didn't rain","It rains and ground is wet"],k:1},
+    {a:0,q:"In a proof, a postulate is…",c:["A statement that must be proved","An accepted truth without proof","A type of theorem","A guess"],k:1},
+    {a:0,q:"Angles A and B are supplementary. A = 3x, B = 2x + 10. Find x.",c:["34","36","38","170"],k:0},
+    {a:0,q:"If two lines are cut by a transversal and alternate interior angles are equal, the lines are…",c:["Perpendicular","Parallel","Skew","Intersecting"],k:1},
+    {a:1,q:"Which proves two triangles congruent?",c:["AAA","SSA","SAS","All of these"],k:2},
+    {a:1,q:"Triangles are similar with scale factor 3:1. If the small triangle's side is 4, the large side is…",c:["4⁄3","7","12","16"],k:2},
+    {a:1,q:"Two triangles have angles 40°, 60°, 80° and 40°, 60°, 80°. They are…",c:["Always congruent","Always similar","Never similar","Cannot determine"],k:1},
+    {a:1,q:"CPCTC stands for…",c:["Corresponding Parts of Congruent Triangles are Congruent","Congruent Parts Create Two Congruences","Common Properties of Combined Triangles","Corresponding Proofs Complete Triangle Congruence"],k:0},
+    {a:1,q:"A dilation with scale factor 2 makes a figure…",c:["Half the size","Same size","Twice the size","Rotated"],k:2},
+    {a:2,q:"In a right triangle, the side opposite the angle is 5, hypotenuse is 13. sin θ = ?",c:["5⁄13","12⁄13","5⁄12","13⁄5"],k:0},
+    {a:2,q:"cos 60° = ?",c:["0","0.5","0.866","1"],k:1},
+    {a:2,q:"A ladder leans against a wall at 70°. The base is 5 ft from the wall. Height reached? (tan 70° ≈ 2.75)",c:["10.0 ft","13.75 ft","18.75 ft","1.82 ft"],k:1},
+    {a:2,q:"In a 45-45-90 triangle with leg = 6, hypotenuse = ?",c:["6","6√2","12","6√3"],k:1},
+    {a:2,q:"In a 30-60-90 triangle, the short leg is 5. The hypotenuse is…",c:["5√2","5√3","10","15"],k:2},
+    {a:3,q:"Central angle = 80°. Inscribed angle intercepting the same arc = ?",c:["40°","80°","160°","320°"],k:0},
+    {a:3,q:"Arc length for radius 10, central angle 90°? (Use π ≈ 3.14)",c:["5π","7.85","15.7","31.4"],k:2},
+    {a:3,q:"A tangent to a circle at point P is ___ to the radius at P.",c:["Parallel","Equal","Perpendicular","Supplementary"],k:2},
+    {a:3,q:"Area of a sector with radius 6 and central angle 60°?",c:["6π","12π","36π","2π"],k:0},
+    {a:3,q:"Two chords intersect inside a circle. The products of their segments are…",c:["Always equal","Never equal","Equal only if chords are equal","Undefined"],k:0},
+    {a:4,q:"Volume of a cone: radius 4, height 9? (V = ⅓πr²h)",c:["48π","36π","144π","16π"],k:0},
+    {a:4,q:"Surface area of a sphere with radius 5? (SA = 4πr²)",c:["25π","50π","100π","500π"],k:2},
+    {a:4,q:"A prism has a triangular base (b=6, h=4) and length 10. Volume?",c:["60","120","240","40"],k:1},
+    {a:4,q:"A cylinder's radius is tripled. Volume is multiplied by…",c:["3","6","9","27"],k:2},
+    {a:4,q:"Volume of a sphere with radius 3? (V = ⁴⁄₃πr³)",c:["12π","36π","27π","108π"],k:1}
+  ]
+}
+};
+
+/* ===================== STATE ===================== */
+let authed = false;
+let grade = null;
+let state = {name:"",idx:0,answers:[],phase:"start"};
+const screen = document.getElementById("screen");
+const pbar = document.getElementById("pbar");
+
+function drawProgress(){
+  if(!grade){pbar.innerHTML="";return}
+  const qs=BANKS[grade].questions;
+  pbar.innerHTML="";
+  qs.forEach((_,i)=>{
+    const s=document.createElement("span");
+    if(state.phase==="test"){
+      if(state.answers[i]!==null)s.classList.add("done");
+      if(i===state.idx)s.classList.add("here");
+    }else if(state.phase==="results"){s.classList.add("done")}
+    pbar.appendChild(s);
+  });
+}
+
+/* ===================== SCREENS ===================== */
+function passwordScreen(){
+  pbar.innerHTML="";
+  screen.innerHTML=`
+    <div class="kicker">Instructor Access</div>
+    <div class="display">Student <em>Assessments</em></div>
+    <p class="lede">These placement assessments are for registered Up and Up Educational Services students. Enter the access code provided by Brother Truth to continue.</p>
+    <label class="field" for="pw">Access Code</label>
+    <input type="password" id="pw" placeholder="Enter access code">
+    <div class="pw-error" id="pw-err"></div>
+    <button class="btn" id="pwBtn">Continue</button>
+  `;
+  document.getElementById("pwBtn").addEventListener("click",checkPw);
+  document.getElementById("pw").addEventListener("keydown",e=>{if(e.key==="Enter")checkPw()});
+}
+
+function checkPw(){
+  const v=document.getElementById("pw").value.trim();
+  if(v===PASS){authed=true;gradePickerScreen()}
+  else{document.getElementById("pw-err").textContent="Incorrect access code. Please try again."}
+}
+
+function gradePickerScreen(){
+  grade=null;drawProgress();
+  screen.innerHTML=`
+    <div class="kicker">Select Grade Level</div>
+    <div class="display">Choose an <em>assessment</em></div>
+    <p class="lede">Each assessment covers the prerequisite skills needed for that grade level. Results include a detailed strengths and weaknesses report with a recommended tutoring plan.</p>
+    <div class="grade-grid">
+      ${[6,7,8,9,10,11].map(g=>`
+        <div class="grade-card" data-g="${g}">
+          <div class="g-num">${g}th</div>
+          <div class="g-label">Grade Readiness</div>
+          <div class="g-sub">Tests ${BANKS[g].tests}</div>
+        </div>`).join("")}
+    </div>
+  `;
+  screen.querySelectorAll(".grade-card").forEach(c=>{
+    c.addEventListener("click",()=>{
+      grade=+c.dataset.g;
+      state={name:"",idx:0,answers:new Array(BANKS[grade].questions.length).fill(null),phase:"start"};
+      startScreen();
+    });
+  });
+}
+
+function startScreen(){
+  const B=BANKS[grade];
+  state.phase="start";drawProgress();
+  screen.innerHTML=`
+    <div class="kicker">${B.subtitle}</div>
+    <div class="display">Let's find your child's <em>starting point.</em></div>
+    <p class="lede">This 25-question assessment covers the key skill areas from ${B.tests}. It identifies exactly where your child is strong and where tutoring time should focus. Take your time.</p>
+    <div class="skill-chips">
+      ${B.areas.map(a=>`<span class="skill-chip"><span class="icon">${a.icon}</span>${a.name}</span>`).join("")}
+    </div>
+    <label class="field" for="nm">Student first name</label>
+    <input type="text" id="nm" autocomplete="off" placeholder="Enter name" value="${state.name.replace(/"/g,"&quot;")}">
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn" id="startBtn">Start Assessment</button>
+      <button class="btn ghost" id="backToGrades">&larr; Change Grade</button>
+    </div>
+  `;
+  document.getElementById("startBtn").addEventListener("click",()=>{
+    state.name=document.getElementById("nm").value.trim()||"Student";
+    state.idx=0;questionScreen();
+  });
+  document.getElementById("backToGrades").addEventListener("click",gradePickerScreen);
+}
+
+function questionScreen(){
+  const B=BANKS[grade],qs=B.questions;
+  state.phase="test";drawProgress();
+  const i=state.idx,Q=qs[i],A=B.areas[Q.a];
+  screen.innerHTML=`
+    <div class="qmeta">
+      <span class="area-tag"><span class="ti">${A.icon}</span>${A.name}</span>
+      <span class="qcount">${i+1} / ${qs.length}</span>
+    </div>
+    <div class="qtext">${Q.q}</div>
+    <div class="choices" role="group">
+      ${Q.c.map((c,ci)=>`
+        <button class="choice ${state.answers[i]===ci?"picked":""}" data-c="${ci}">
+          <span class="key">${"ABCD"[ci]}</span><span>${c}</span>
+        </button>`).join("")}
+    </div>
+    <div class="navrow">
+      <button class="btn ghost" id="backBtn" ${i===0?"disabled":""}>&larr; Back</button>
+      <button class="btn" id="nextBtn">${i===qs.length-1?"Finish & See Results":"Next →"}</button>
+    </div>
+  `;
+  screen.querySelectorAll(".choice").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      state.answers[i]=+btn.dataset.c;
+      screen.querySelectorAll(".choice").forEach(b=>b.classList.remove("picked"));
+      btn.classList.add("picked");drawProgress();
+    });
+  });
+  document.getElementById("backBtn").addEventListener("click",()=>{state.idx--;questionScreen()});
+  document.getElementById("nextBtn").addEventListener("click",()=>{
+    if(i===qs.length-1){
+      const m=state.answers.filter(a=>a===null).length;
+      if(m>0&&!confirm(m+" question(s) unanswered. Finish anyway?"))return;
+      resultsScreen();
+    }else{state.idx++;questionScreen()}
+  });
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function levelFor(s,t){const p=s/t*100;if(p>=80)return{cls:"l3",label:"Strong",meter:"strong"};if(p>=60)return{cls:"l2",label:"Developing",meter:"mid"};return{cls:"l1",label:"Needs Support",meter:"low"}}
+
+function resultsScreen(){
+  const B=BANKS[grade],qs=B.questions;
+  state.phase="results";drawProgress();
+  const perArea=B.areas.map(()=>({right:0,total:0,missed:[]}));
+  qs.forEach((Q,i)=>{perArea[Q.a].total++;if(state.answers[i]===Q.k)perArea[Q.a].right++;else perArea[Q.a].missed.push(Q.q)});
+  const total=perArea.reduce((s,a)=>s+a.right,0);
+  const pct=Math.round(total/qs.length*100);
+
+  let verdict,detail;
+  if(pct>=85){verdict="Strong foundation";detail=state.name+" demonstrated solid command of prerequisite skills. Tutoring can focus on previewing upcoming grade-level concepts to start the year ahead."}
+  else if(pct>=65){verdict="Good base — targeted gaps to close";detail=state.name+" has a good foundation with specific areas that need reinforcement. The plan below targets those gaps directly."}
+  else{verdict="Foundation building recommended";detail=state.name+" will benefit from focused work on core prerequisite skills before moving into new grade-level content."}
+
+  const weakAreas=B.areas.filter((_,ai)=>levelFor(perArea[ai].right,perArea[ai].total).cls!=="l3");
+  const strongAreas=B.areas.filter((_,ai)=>levelFor(perArea[ai].right,perArea[ai].total).cls==="l3");
+
+  let nextSteps=[];
+  if(weakAreas.length>0){nextSteps.push("Focus areas in priority order: "+weakAreas.map(a=>a.name).join(" → "));nextSteps.push("Sessions will begin with the highest-impact skill gaps and build progressively")}
+  if(strongAreas.length>0)nextSteps.push("Strong areas ("+strongAreas.map(a=>a.name).join(", ")+") can be maintained with periodic review");
+  if(pct>=65)nextSteps.push("Once gaps are closed, we'll preview upcoming grade-level topics");
+  nextSteps.push("A follow-up assessment after the first 4 sessions will measure progress and adjust the plan");
+
+  const today=new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+
+  screen.innerHTML=`
+    <div class="print-head"><h2>Up and Up Educational Services — ${B.title}</h2><p>Student: ${state.name} · Date: ${today}</p></div>
+    <div class="score-hero">
+      <div class="kicker">${state.name}'s Results · ${grade}th Grade Readiness · ${today}</div>
+      <div class="big">${total} / ${qs.length}</div>
+      <div class="of">${pct}% correct</div><br>
+      <span class="verdict">${verdict}</span>
+    </div>
+    <p style="text-align:center;font-size:.92rem;color:var(--muted);max-width:50ch;margin:0 auto 8px;line-height:1.6">${detail}</p>
+    <h3 class="report-section">Skill Breakdown</h3>
+    ${B.areas.map((a,ai)=>{
+      const r=perArea[ai],lvl=levelFor(r.right,r.total),isWeak=lvl.cls!=="l3";
+      return`<div class="area-result">
+        <div class="top"><span class="nm"><span class="ai">${a.icon}</span>${a.name}</span><span class="lvl ${lvl.cls}">${lvl.label} · ${r.right}/${r.total}</span></div>
+        <div class="meter"><i class="${lvl.meter}" style="width:${r.right/r.total*100}%"></i></div>
+        <div class="area-note">${isWeak?a.weak:a.strong}</div>
+        ${isWeak&&r.missed.length?`<ul class="missed-list">${r.missed.map(m=>`<li>Missed: ${m}</li>`).join("")}</ul>`:""}
+        ${isWeak?`<div style="margin-top:10px;font-size:.82rem;font-weight:700;color:var(--accent)">Recommended practice:</div><ul class="missed-list">${a.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}
+      </div>`}).join("")}
+    <div class="plan"><h3>Tutoring Plan & Next Steps</h3><p>${detail}</p><ul class="next-steps">${nextSteps.map(s=>`<li>${s}</li>`).join("")}</ul></div>
+    <div class="resultbtns no-print">
+      <button class="btn" id="printBtn">Print / Save Report</button>
+      <button class="btn ghost sm" id="retakeBtn">Retake</button>
+      <button class="btn ghost sm" id="gradeBtn">&larr; Other Grades</button>
+    </div>`;
+  document.getElementById("printBtn").addEventListener("click",()=>window.print());
+  document.getElementById("retakeBtn").addEventListener("click",()=>{if(confirm("Clear all answers?")){state={name:"",idx:0,answers:new Array(qs.length).fill(null),phase:"start"};startScreen()}});
+  document.getElementById("gradeBtn").addEventListener("click",gradePickerScreen);
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+passwordScreen();
+</script>
+</body>
+</html>
