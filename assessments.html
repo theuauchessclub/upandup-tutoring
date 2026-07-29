@@ -58,6 +58,14 @@ input:focus{outline:3px solid rgba(79,109,245,.4);border-color:var(--accent)}
 .area-tag{display:inline-flex;align-items:center;gap:8px;background:var(--bg);color:#fff;border-radius:99px;padding:6px 16px 6px 8px;font-size:.8rem;font-weight:700}
 .area-tag .ti{width:24px;height:24px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
 .qcount{font-size:.82rem;font-weight:700;color:var(--muted)}
+.timer-bar{display:flex;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:18px;gap:12px}
+.timer-clock{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;color:var(--ink);min-width:70px;text-align:center}
+.timer-clock.warn{color:var(--warn)}
+.timer-clock.danger{color:var(--weak);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.timer-track i{display:block;height:100%;background:var(--grad);border-radius:99px;transition:width 1s linear}
+.timer-label{font-size:.75rem;font-weight:600;color:var(--muted)}
 .qtext{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:600;line-height:1.4;margin-bottom:22px;color:var(--ink)}
 .choices{display:grid;gap:10px;margin-bottom:28px}
 .choice{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;font-weight:600;font-size:1.02rem;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:15px 18px;cursor:pointer;color:var(--ink);transition:border-color .1s ease,background .1s ease}
@@ -146,7 +154,8 @@ const BANKS = {
     {id:"fr",icon:"½",name:"Fractions",strong:"Fraction operations look solid — the strongest predictor of middle school success.",weak:"Fraction operations need focused attention — the highest-priority area for 6th-grade readiness.",tips:["Add and subtract fractions with unlike denominators","Multiply fractions by whole numbers and fractions","Divide with unit fractions using visual models"]},
     {id:"dc",icon:".0",name:"Decimals",strong:"Decimal computation and comparison are in good shape.",weak:"Decimal operations need strengthening for ratio and percent work ahead.",tips:["Add and subtract decimals with regrouping","Multiply and divide decimals","Compare and order decimals to thousandths"]},
     {id:"gm",icon:"△",name:"Geometry & Measurement",strong:"Volume, coordinates, and conversions look strong.",weak:"Volume, coordinate plane, and unit conversions need review.",tips:["Calculate volume of rectangular prisms","Plot points on the coordinate plane","Convert between metric units"]},
-    {id:"wp",icon:"?!",name:"Problem Solving",strong:"Multi-step reasoning and early ratio thinking are strong.",weak:"Multi-step problems and proportional reasoning need development.",tips:["Break word problems into smaller parts","Identify rate/ratio relationships","Review order of operations"]}
+    {id:"wp",icon:"?!",name:"Problem Solving",strong:"Multi-step reasoning and early ratio thinking are strong.",weak:"Multi-step problems and proportional reasoning need development.",tips:["Break word problems into smaller parts","Identify rate/ratio relationships","Review order of operations"]},
+    {id:"vc",icon:"Aa",name:"Math Vocabulary",strong:"Key math terms and definitions are well-understood.",weak:"Core math vocabulary needs reinforcement — knowing precise terms helps students follow instruction and word problems.",tips:["Review operation terms: sum, difference, product, quotient","Practice identifying fraction types: proper, improper, mixed","Learn geometry vocabulary: perimeter, area, volume"]}
   ],
   questions:[
     {a:0,q:"What is the value of the digit 7 in 3,724,891?",c:["7,000","70,000","700,000","7,000,000"],k:2},
@@ -173,7 +182,12 @@ const BANKS = {
     {a:4,q:"2 cups flour makes 3 batches. Cups for 12 batches?",c:["6","8","12","24"],k:1},
     {a:4,q:"5 pencils cost $1.25. Price of 1?",c:["$0.20","$0.25","$0.31","$1.20"],k:1},
     {a:4,q:"Pattern: 3, 7, 11, 15, … Next?",c:["17","18","19","21"],k:2},
-    {a:4,q:"2 + 3 × 4 = ?",c:["20","14","24","9"],k:1}
+    {a:4,q:"2 + 3 × 4 = ?",c:["20","14","24","9"],k:1},
+    {a:5,q:"The result of a multiplication problem is called the…",c:["sum","difference","product","quotient"],k:2},
+    {a:5,q:"A number that divides evenly into another number is called a…",c:["multiple","factor","prime","remainder"],k:1},
+    {a:5,q:"In the expression 8 + 3, the answer is called the…",c:["difference","quotient","product","sum"],k:3},
+    {a:5,q:"A fraction where the numerator is larger than the denominator is called…",c:["proper fraction","improper fraction","mixed number","unit fraction"],k:1},
+    {a:5,q:"The distance around a shape is called the…",c:["area","volume","perimeter","diameter"],k:2}
   ]
 },
 7:{
@@ -185,7 +199,8 @@ const BANKS = {
     {id:"ns",icon:"±",name:"The Number System",strong:"Integer and rational number operations are in good shape.",weak:"Operations with negative numbers and rational numbers need focused work.",tips:["Practice adding, subtracting, multiplying integers","Place negative numbers and fractions on number lines","Convert between fractions, decimals, and percents"]},
     {id:"ee",icon:"x=",name:"Expressions & Equations",strong:"Algebraic expressions and one-step equations look strong.",weak:"Writing and solving expressions and equations need more practice.",tips:["Write expressions from word descriptions","Solve one-step equations with all operations","Use the distributive property to simplify"]},
     {id:"gm",icon:"△",name:"Geometry",strong:"Area and volume skills are well-developed.",weak:"Area, surface area, and volume concepts need reinforcement.",tips:["Find area of triangles and special quadrilaterals","Calculate surface area of rectangular prisms","Practice decomposing composite shapes"]},
-    {id:"sp",icon:"📊",name:"Statistics & Probability",strong:"Data analysis and statistical thinking are strong.",weak:"Interpreting data displays and understanding variability need work.",tips:["Calculate mean, median, mode, and range","Read and interpret dot plots, histograms, box plots","Describe the shape and spread of data sets"]}
+    {id:"sp",icon:"📊",name:"Statistics & Probability",strong:"Data analysis and statistical thinking are strong.",weak:"Interpreting data displays and understanding variability need work.",tips:["Calculate mean, median, mode, and range","Read and interpret dot plots, histograms, box plots","Describe the shape and spread of data sets"]},
+    {id:"vc",icon:"Aa",name:"Math Vocabulary",strong:"Math vocabulary from 6th grade is well-understood.",weak:"Key 6th-grade math terms need review to support 7th-grade instruction.",tips:["Review ratio, rate, and unit rate definitions","Practice using terms: expression, equation, variable, coefficient","Learn data vocabulary: mean, median, mode, range, outlier"]}
   ],
   questions:[
     {a:0,q:"A recipe calls for 3 cups of flour for every 2 cups of sugar. How much flour for 8 cups of sugar?",c:["6 cups","10 cups","12 cups","16 cups"],k:2},
@@ -212,7 +227,12 @@ const BANKS = {
     {a:4,q:"Median of: 12, 5, 8, 15, 3?",c:["5","8","9","12"],k:1},
     {a:4,q:"Range of: 22, 14, 31, 18, 25?",c:["14","17","22","31"],k:1},
     {a:4,q:"A dot plot shows test scores. Most dots cluster at 85. This is the…",c:["range","median","mode","mean"],k:2},
-    {a:4,q:"Which measure of center is most affected by outliers?",c:["Mode","Median","Mean","Range"],k:2}
+    {a:4,q:"Which measure of center is most affected by outliers?",c:["Mode","Median","Mean","Range"],k:2},
+    {a:5,q:"A ratio that compares a quantity to one unit is called a…",c:["proportion","unit rate","percent","fraction"],k:1},
+    {a:5,q:"In the expression 4x + 7, the number 4 is called the…",c:["variable","constant","coefficient","exponent"],k:2},
+    {a:5,q:"A letter that represents an unknown value is called a…",c:["coefficient","constant","term","variable"],k:3},
+    {a:5,q:"Two ratios that are equal form a…",c:["rate","proportion","percent","unit rate"],k:1},
+    {a:5,q:"A value far away from the rest of the data is called an…",c:["average","outlier","median","variable"],k:1}
   ]
 },
 8:{
@@ -224,7 +244,8 @@ const BANKS = {
     {id:"rn",icon:"±",name:"Rational Number Operations",strong:"Operations with rational numbers are well-developed.",weak:"Computing with negative fractions and decimals needs focused practice.",tips:["Multiply and divide negative rational numbers","Add and subtract mixed numbers with negatives","Convert between fraction, decimal, and percent forms"]},
     {id:"ee",icon:"x=",name:"Expressions & Equations",strong:"Two-step equations and inequalities look strong.",weak:"Multi-step equations and inequalities need more practice.",tips:["Solve two-step equations","Graph solutions to inequalities on number lines","Write and solve equations from word problems"]},
     {id:"gm",icon:"∠",name:"Geometry",strong:"Angle relationships and circle calculations are in good shape.",weak:"Angle relationships, circles, and area of composite shapes need review.",tips:["Find missing angles using supplementary/complementary relationships","Calculate circumference and area of circles","Find area of composite shapes"]},
-    {id:"sp",icon:"📊",name:"Statistics & Probability",strong:"Probability and statistical inference skills are strong.",weak:"Probability calculations and data inference need development.",tips:["Calculate simple and compound probability","Draw inferences from random samples","Compare two data sets using measures of center and variability"]}
+    {id:"sp",icon:"📊",name:"Statistics & Probability",strong:"Probability and statistical inference skills are strong.",weak:"Probability calculations and data inference need development.",tips:["Calculate simple and compound probability","Draw inferences from random samples","Compare two data sets using measures of center and variability"]},
+    {id:"vc",icon:"Aa",name:"Math Vocabulary",strong:"7th-grade math vocabulary is well-understood.",weak:"Key 7th-grade terms need review to support 8th-grade instruction.",tips:["Review supplementary, complementary, vertical angle terms","Practice terms: circumference, radius, diameter, chord","Learn probability vocabulary: sample space, compound event, outcome"]}
   ],
   questions:[
     {a:0,q:"A store marks up items 40%. Cost is $15. Selling price?",c:["$6","$19","$21","$55"],k:2},
@@ -251,7 +272,12 @@ const BANKS = {
     {a:4,q:"A bag has 3 red, 5 blue, 2 green marbles. P(blue)?",c:["1⁄5","3⁄10","1⁄2","5⁄8"],k:2},
     {a:4,q:"30 out of 50 surveyed prefer pizza. Predict for 200 students?",c:["60","100","120","150"],k:2},
     {a:4,q:"Two data sets have means of 72 and 85. Which performed better on average?",c:["The set with mean 72","The set with mean 85","Can't tell without seeing the data","They performed equally"],k:1},
-    {a:4,q:"An event has P = 0. This means…",c:["It's certain","It's likely","It's unlikely","It's impossible"],k:3}
+    {a:4,q:"An event has P = 0. This means…",c:["It's certain","It's likely","It's unlikely","It's impossible"],k:3},
+    {a:5,q:"Two angles that add up to 180° are called…",c:["complementary","vertical","supplementary","adjacent"],k:2},
+    {a:5,q:"The distance from the center of a circle to any point on it is the…",c:["diameter","circumference","chord","radius"],k:3},
+    {a:5,q:"A relationship where one quantity increases as another decreases at a constant rate is…",c:["direct proportion","inverse proportion","linear growth","exponential decay"],k:1},
+    {a:5,q:"The set of all values that make an inequality true is the…",c:["equation","expression","solution set","coefficient"],k:2},
+    {a:5,q:"A scale factor is used to create figures that are…",c:["congruent","similar","perpendicular","supplementary"],k:1}
   ]
 },
 9:{
@@ -263,7 +289,8 @@ const BANKS = {
     {id:"fn",icon:"f(x)",name:"Functions",strong:"Function concepts and input-output reasoning are solid.",weak:"Understanding functions, domain/range, and function notation needs work.",tips:["Determine if a relation is a function","Identify domain and range from tables and graphs","Evaluate simple function notation"]},
     {id:"ex",icon:"x²",name:"Exponents & Scientific Notation",strong:"Exponent rules and scientific notation are well-developed.",weak:"Exponent laws and scientific notation need more practice.",tips:["Apply product, quotient, and power rules for exponents","Convert between standard and scientific notation","Compute with numbers in scientific notation"]},
     {id:"gm",icon:"△",name:"Geometry & Pythagorean Theorem",strong:"Pythagorean theorem and transformation skills look strong.",weak:"The Pythagorean theorem, transformations, and volume formulas need review.",tips:["Apply the Pythagorean theorem to find missing sides","Identify and perform translations, rotations, reflections","Calculate volume of cylinders, cones, and spheres"]},
-    {id:"ds",icon:"📊",name:"Data & Statistics",strong:"Scatter plot analysis and association skills are solid.",weak:"Reading scatter plots and understanding association patterns need development.",tips:["Describe trends in scatter plots","Identify positive, negative, and no association","Use a line of best fit to make predictions"]}
+    {id:"ds",icon:"📊",name:"Data & Statistics",strong:"Scatter plot analysis and association skills are solid.",weak:"Reading scatter plots and understanding association patterns need development.",tips:["Describe trends in scatter plots","Identify positive, negative, and no association","Use a line of best fit to make predictions"]},
+    {id:"vc",icon:"Aa",name:"Math Vocabulary",strong:"Pre-Algebra vocabulary is well-mastered.",weak:"Key Pre-Algebra terms need reinforcement before Algebra I.",tips:["Review slope, y-intercept, rate of change","Practice terms: function, domain, range, input, output","Learn exponent vocabulary: base, power, scientific notation"]}
   ],
   questions:[
     {a:0,q:"What is the slope of a line through (2, 3) and (6, 11)?",c:["1⁄2","2","4","8"],k:1},
@@ -290,7 +317,12 @@ const BANKS = {
     {a:4,q:"A line of best fit predicts y = 50 when x = 10. The actual value is 47. Residual?",c:["3","−3","97","50"],k:1},
     {a:4,q:"Two variables show no pattern in a scatter plot. They have…",c:["Positive association","Negative association","No association","Perfect correlation"],k:2},
     {a:4,q:"Which is NOT a way to display bivariate data?",c:["Scatter plot","Two-way table","Line of best fit","Stem-and-leaf plot"],k:3},
-    {a:4,q:"As study hours increase, grades tend to increase. This is…",c:["Causation only","Negative correlation","Positive correlation","No relationship"],k:2}
+    {a:4,q:"As study hours increase, grades tend to increase. This is…",c:["Causation only","Negative correlation","Positive correlation","No relationship"],k:2},
+    {a:5,q:"The steepness of a line is called the…",c:["y-intercept","origin","slope","domain"],k:2},
+    {a:5,q:"In f(x) = 2x + 1, the set of all possible x-values is the…",c:["range","function","domain","slope"],k:2},
+    {a:5,q:"A number written as 4.5 × 10³ is in…",c:["standard form","expanded form","scientific notation","factored form"],k:2},
+    {a:5,q:"The point where a line crosses the y-axis is the…",c:["slope","origin","x-intercept","y-intercept"],k:3},
+    {a:5,q:"A relationship where each input has exactly one output is a…",c:["variable","equation","function","proportion"],k:2}
   ]
 },
 10:{
@@ -302,7 +334,8 @@ const BANKS = {
     {id:"sy",icon:"{ }",name:"Systems of Equations",strong:"Solving systems by multiple methods is solid.",weak:"Systems of equations need more practice — these appear in Geometry proofs and applications.",tips:["Solve systems by graphing, substitution, and elimination","Identify systems with no solution or infinite solutions","Write systems from word problems"]},
     {id:"po",icon:"x²",name:"Polynomials & Factoring",strong:"Polynomial operations and factoring are strong.",weak:"Polynomial multiplication and factoring need focused work.",tips:["Multiply binomials (FOIL) and polynomials","Factor trinomials and difference of squares","Factor out the GCF from expressions"]},
     {id:"qd",icon:"∪",name:"Quadratic Functions",strong:"Quadratic concepts and solving methods are well-developed.",weak:"Quadratic functions, graphing parabolas, and solving quadratics need work.",tips:["Identify vertex, axis of symmetry, and direction of opening","Solve quadratics by factoring and the quadratic formula","Relate graphs to equations"]},
-    {id:"ef",icon:"2ⁿ",name:"Exponential Functions",strong:"Exponential growth/decay and sequences are in good shape.",weak:"Exponential functions and sequences need development.",tips:["Distinguish linear from exponential growth","Write and evaluate exponential functions","Identify arithmetic and geometric sequences"]}
+    {id:"ef",icon:"2ⁿ",name:"Exponential Functions",strong:"Exponential growth/decay and sequences are in good shape.",weak:"Exponential functions and sequences need development.",tips:["Distinguish linear from exponential growth","Write and evaluate exponential functions","Identify arithmetic and geometric sequences"]},
+    {id:"vc",icon:"Aa",name:"Math Vocabulary",strong:"Algebra I vocabulary is well-understood.",weak:"Key Algebra I terms need review before Geometry.",tips:["Review polynomial terminology: monomial, binomial, trinomial, degree","Practice quadratic terms: vertex, axis of symmetry, discriminant","Learn function vocabulary: domain, range, zeros, intercepts"]}
   ],
   questions:[
     {a:0,q:"Slope of a line through (−1, 4) and (3, −2)?",c:["1⁄2","−3⁄2","2","−2"],k:1},
@@ -329,7 +362,12 @@ const BANKS = {
     {a:4,q:"A population doubles every year from 100. After 3 years?",c:["300","400","600","800"],k:3},
     {a:4,q:"Which is exponential? y = 3x + 1, y = 3·2ˣ, y = x², y = 3/x",c:["y = 3x + 1","y = 3·2ˣ","y = x²","y = 3/x"],k:1},
     {a:4,q:"Geometric sequence: 4, 12, 36, … Common ratio?",c:["2","3","8","9"],k:1},
-    {a:4,q:"A car loses 15% of its value each year. This models…",c:["Linear growth","Exponential growth","Exponential decay","Quadratic growth"],k:2}
+    {a:4,q:"A car loses 15% of its value each year. This models…",c:["Linear growth","Exponential growth","Exponential decay","Quadratic growth"],k:2},
+    {a:5,q:"An expression with three terms is called a…",c:["monomial","binomial","trinomial","polynomial"],k:2},
+    {a:5,q:"The highest power of the variable in a polynomial is its…",c:["coefficient","constant","degree","factor"],k:2},
+    {a:5,q:"The x-values where a function equals zero are called…",c:["intercepts","vertices","zeros/roots","maxima"],k:2},
+    {a:5,q:"The vertical line through the vertex of a parabola is the…",c:["slope","axis of symmetry","directrix","asymptote"],k:1},
+    {a:5,q:"In a geometric sequence, each term is found by multiplying by the…",c:["common difference","common ratio","constant","coefficient"],k:1}
   ]
 },
 11:{
@@ -341,7 +379,8 @@ const BANKS = {
     {id:"cs",icon:"∼",name:"Congruence & Similarity",strong:"Triangle congruence and similarity are solid.",weak:"Congruence criteria and similarity reasoning need focused work.",tips:["Apply SSS, SAS, ASA, AAS congruence criteria","Use AA similarity to find missing sides","Set up and solve proportions from similar figures"]},
     {id:"rt",icon:"⊿",name:"Right Triangles & Trigonometry",strong:"Pythagorean theorem and basic trig ratios are strong.",weak:"Trigonometric ratios and right triangle applications need development.",tips:["Define and calculate sine, cosine, and tangent","Solve for missing sides and angles in right triangles","Apply trig to real-world problems"]},
     {id:"ci",icon:"◯",name:"Circles",strong:"Circle properties, arcs, and angles are well-mastered.",weak:"Circle theorems, arc measures, and sector calculations need review.",tips:["Calculate arc length and sector area","Apply inscribed angle and central angle theorems","Use the relationship between tangent lines and radii"]},
-    {id:"av",icon:"▣",name:"Area, Volume & Modeling",strong:"Surface area, volume, and geometric modeling skills are strong.",weak:"Volume and surface area formulas for complex solids need practice.",tips:["Calculate volume of prisms, pyramids, cylinders, cones, spheres","Find surface area of composite solids","Apply geometric modeling to real-world contexts"]}
+    {id:"av",icon:"▣",name:"Area, Volume & Modeling",strong:"Surface area, volume, and geometric modeling skills are strong.",weak:"Volume and surface area formulas for complex solids need practice.",tips:["Calculate volume of prisms, pyramids, cylinders, cones, spheres","Find surface area of composite solids","Apply geometric modeling to real-world contexts"]},
+    {id:"vc",icon:"Aa",name:"Math Vocabulary",strong:"Geometry vocabulary is well-mastered.",weak:"Key Geometry terms need review before advancing.",tips:["Review congruence terms: SSS, SAS, ASA, AAS, CPCTC","Practice trig vocabulary: sine, cosine, tangent, hypotenuse","Learn circle terms: arc, chord, secant, tangent, inscribed angle"]}
   ],
   questions:[
     {a:0,q:"If P → Q is true and P is true, then…",c:["Q is true","Q is false","P is false","Nothing follows"],k:0},
@@ -368,7 +407,12 @@ const BANKS = {
     {a:4,q:"Surface area of a sphere with radius 5? (SA = 4πr²)",c:["25π","50π","100π","500π"],k:2},
     {a:4,q:"A prism has a triangular base (b=6, h=4) and length 10. Volume?",c:["60","120","240","40"],k:1},
     {a:4,q:"A cylinder's radius is tripled. Volume is multiplied by…",c:["3","6","9","27"],k:2},
-    {a:4,q:"Volume of a sphere with radius 3? (V = ⁴⁄₃πr³)",c:["12π","36π","27π","108π"],k:1}
+    {a:4,q:"Volume of a sphere with radius 3? (V = ⁴⁄₃πr³)",c:["12π","36π","27π","108π"],k:1},
+    {a:5,q:"Two figures with the same shape and size are…",c:["similar","congruent","supplementary","complementary"],k:1},
+    {a:5,q:"The longest side of a right triangle is the…",c:["leg","base","altitude","hypotenuse"],k:3},
+    {a:5,q:"A line that touches a circle at exactly one point is a…",c:["chord","secant","tangent","diameter"],k:2},
+    {a:5,q:"An angle formed by two chords meeting inside a circle is an…",c:["central angle","inscribed angle","exterior angle","right angle"],k:1},
+    {a:5,q:"Two figures with the same shape but different sizes are…",c:["congruent","similar","equal","symmetric"],k:1}
   ]
 }
 };
@@ -377,6 +421,11 @@ const BANKS = {
 let authed = false;
 let grade = null;
 let state = {name:"",idx:0,answers:[],phase:"start"};
+let timerInterval = null;
+let timerStart = null;
+let timerEnd = null;
+const TIMER_MINUTES = 90;
+const TIMER_SECONDS = TIMER_MINUTES * 60;
 const screen = document.getElementById("screen");
 const pbar = document.getElementById("pbar");
 
@@ -459,9 +508,50 @@ function startScreen(){
   `;
   document.getElementById("startBtn").addEventListener("click",()=>{
     state.name=document.getElementById("nm").value.trim()||"Student";
-    state.idx=0;questionScreen();
+    state.idx=0;
+    timerStart=new Date();
+    timerEnd=null;
+    startTimer();
+    questionScreen();
   });
   document.getElementById("backToGrades").addEventListener("click",gradePickerScreen);
+}
+
+function startTimer(){
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,1000);
+}
+function stopTimer(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+  timerEnd=new Date();
+}
+function getElapsedSeconds(){
+  if(!timerStart)return 0;
+  return Math.floor(((timerEnd||new Date())-timerStart)/1000);
+}
+function getRemainingSeconds(){
+  return Math.max(0,TIMER_SECONDS-getElapsedSeconds());
+}
+function formatTime(sec){
+  const m=Math.floor(sec/60),s=sec%60;
+  return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function updateTimer(){
+  const rem=getRemainingSeconds();
+  const el=document.getElementById("timer-display");
+  if(el){
+    el.textContent=formatTime(rem);
+    el.className="timer-clock"+(rem<=300?" danger":rem<=600?" warn":"");
+  }
+  const track=document.getElementById("timer-track-fill");
+  if(track)track.style.width=(rem/TIMER_SECONDS*100)+"%";
+  if(rem<=0){stopTimer();resultsScreen()}
+}
+function getTimestamp(d){return d?d.toLocaleString("en-US",{month:"long",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit",second:"2-digit",hour12:true}):"—"}
+function getDuration(){
+  const sec=getElapsedSeconds();
+  const m=Math.floor(sec/60),s=sec%60;
+  return m+" min "+s+" sec";
 }
 
 function questionScreen(){
@@ -469,6 +559,11 @@ function questionScreen(){
   state.phase="test";drawProgress();
   const i=state.idx,Q=qs[i],A=B.areas[Q.a];
   screen.innerHTML=`
+    <div class="timer-bar">
+      <span class="timer-label">Time remaining</span>
+      <div class="timer-track"><i id="timer-track-fill" style="width:${getRemainingSeconds()/TIMER_SECONDS*100}%"></i></div>
+      <span class="timer-clock" id="timer-display">${formatTime(getRemainingSeconds())}</span>
+    </div>
     <div class="qmeta">
       <span class="area-tag"><span class="ti">${A.icon}</span>${A.name}</span>
       <span class="qcount">${i+1} / ${qs.length}</span>
@@ -507,6 +602,7 @@ function levelFor(s,t){const p=s/t*100;if(p>=80)return{cls:"l3",label:"Strong",m
 
 function resultsScreen(){
   const B=BANKS[grade],qs=B.questions;
+  stopTimer();
   state.phase="results";drawProgress();
   const perArea=B.areas.map(()=>({right:0,total:0,missed:[]}));
   qs.forEach((Q,i)=>{perArea[Q.a].total++;if(state.answers[i]===Q.k)perArea[Q.a].right++;else perArea[Q.a].missed.push(Q.q)});
@@ -547,12 +643,18 @@ function resultsScreen(){
   nextSteps.push("Recommended schedule: " + schedLabel + " (Monday–Friday, 4:00–7:00 PM, virtual via Google Meet)");
 
   const today=new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  const startStamp=getTimestamp(timerStart);
+  const endStamp=getTimestamp(timerEnd);
+  const duration=getDuration();
 
   // Build email report
   const emailLines = [];
   emailLines.push("ASSESSMENT REPORT — " + B.title);
   emailLines.push("Student: " + state.name);
   emailLines.push("Date: " + today);
+  emailLines.push("Started: " + startStamp);
+  emailLines.push("Completed: " + endStamp);
+  emailLines.push("Duration: " + duration);
   emailLines.push("Score: " + total + " / " + qs.length + " (" + pct + "%)");
   emailLines.push("Overall: " + verdict);
   emailLines.push("");
@@ -579,7 +681,8 @@ function resultsScreen(){
     <div class="score-hero">
       <div class="kicker">${state.name}'s Results · ${grade}th Grade Readiness · ${today}</div>
       <div class="big">${total} / ${qs.length}</div>
-      <div class="of">${pct}% correct</div><br>
+      <div class="of">${pct}% correct</div>
+      <div style="font-size:.82rem;color:var(--muted);margin-top:8px">Started: ${startStamp} · Completed: ${endStamp} · Duration: ${duration}</div><br>
       <span class="verdict">${verdict}</span>
     </div>
     <p style="text-align:center;font-size:.92rem;color:var(--muted);max-width:50ch;margin:0 auto 8px;line-height:1.6">${detail}</p>
@@ -613,7 +716,7 @@ function resultsScreen(){
       <button class="btn ghost sm" id="gradeBtn">&larr; Other Grades</button>
     </div>`;
   document.getElementById("printBtn").addEventListener("click",()=>window.print());
-  document.getElementById("retakeBtn").addEventListener("click",()=>{if(confirm("Clear all answers?")){state={name:"",idx:0,answers:new Array(qs.length).fill(null),phase:"start"};startScreen()}});
+  document.getElementById("retakeBtn").addEventListener("click",()=>{if(confirm("Clear all answers?")){stopTimer();timerStart=null;timerEnd=null;state={name:"",idx:0,answers:new Array(qs.length).fill(null),phase:"start"};startScreen()}});
   document.getElementById("gradeBtn").addEventListener("click",gradePickerScreen);
   window.scrollTo({top:0,behavior:"instant"});
 }
