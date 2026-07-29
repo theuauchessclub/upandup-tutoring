@@ -10,17 +10,17 @@
 <style>
 
 :root{
-  --bg:#0d1526;--ink:#101827;--accent:#4f6df5;--accent2:#8b5cf6;
-  --teal:#2dd4bf;--teal-dark:#0d9488;--muted:#5b6472;--line:#e4e7ee;
+  --bg:#0B1E3A;--ink:#101827;--accent:#0E9F6E;--accent2:#134E4A;
+  --teal:#34D399;--teal-dark:#0d9488;--muted:#5b6472;--line:#e4e7ee;
   --card:#ffffff;--paper:#f7f8fb;
   --good:#10b981;--good-bg:#d1fae5;--warn:#f59e0b;--warn-bg:#fef3c7;
   --weak:#ef4444;--weak-bg:#fee2e2;
-  --grad:linear-gradient(120deg,#4f6df5,#8b5cf6);
+  --grad:linear-gradient(120deg,#0E9F6E,#134E4A);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;
-  background-image:radial-gradient(600px 300px at 80% 15%,rgba(139,92,246,.18),transparent 70%),radial-gradient(500px 300px at 15% 85%,rgba(79,109,245,.14),transparent 70%);
+  background-image:radial-gradient(600px 300px at 80% 15%,rgba(52,211,153,.14),transparent 70%),radial-gradient(500px 300px at 15% 85%,rgba(14,159,110,.12),transparent 70%);
   display:flex;align-items:flex-start;justify-content:center;padding:24px 14px 60px;
 }
 h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-.01em}
@@ -47,8 +47,8 @@ h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-.01em}
 .skill-chip .icon{width:26px;height:26px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
 label.field{display:block;font-weight:700;font-size:.85rem;margin-bottom:6px;color:var(--ink)}
 input[type=text],input[type=password]{width:100%;padding:14px 16px;font:inherit;font-weight:600;border:1px solid var(--line);border-radius:12px;background:var(--paper);margin-bottom:20px;color:var(--ink);font-size:.95rem}
-input:focus{outline:3px solid rgba(79,109,245,.4);border-color:var(--accent)}
-.btn{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;border:none;border-radius:99px;cursor:pointer;padding:14px 28px;background:var(--grad);color:#fff;box-shadow:0 8px 24px -8px rgba(99,102,241,.55);transition:transform .1s ease}
+input:focus{outline:3px solid rgba(14,159,110,.35);border-color:var(--accent)}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;border:none;border-radius:99px;cursor:pointer;padding:14px 28px;background:linear-gradient(120deg,#F59E0B,#D97706);color:#3A2705;box-shadow:0 8px 24px -8px rgba(217,119,6,.4);transition:transform .1s ease}
 .btn:hover{transform:translateY(-1px)}
 .btn:active{transform:translateY(2px)}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
@@ -133,7 +133,7 @@ input:focus{outline:3px solid rgba(79,109,245,.4);border-color:var(--accent)}
 .reg-form label{font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 .reg-form input,.reg-form select{width:100%;padding:14px 16px;font:inherit;font-weight:600;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font-size:.95rem}
 .reg-form select option{color:var(--ink)}
-.reg-form input:focus,.reg-form select:focus{outline:3px solid rgba(79,109,245,.4);border-color:var(--accent)}
+.reg-form input:focus,.reg-form select:focus{outline:3px solid rgba(14,159,110,.35);border-color:var(--accent)}
 .reg-err{color:var(--weak);font-size:.88rem;font-weight:600;margin-top:8px;grid-column:1/-1}
 .free-badge{display:inline-block;background:var(--good-bg);color:#065f46;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:5px 14px;margin-bottom:12px}
 @media(max-width:520px){.reg-form{grid-template-columns:1fr}}
