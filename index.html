@@ -9,17 +9,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f7f8fb;
-    --ink:#101827;
-    --navy:#0d1526;
-    --navy-2:#131e35;
-    --accent:#4f6df5;
-    --accent-2:#8b5cf6;
-    --teal:#2dd4bf;
+    --bg:#F7F5F0;
+    --ink:#1F2937;
+    --navy:#0B1E3A;
+    --navy-2:#122B4F;
+    --accent:#0E9F6E;
+    --accent-2:#134E4A;
+    --teal:#34D399;
+    --amber:#F59E0B;
+    --amber-deep:#D97706;
+    --amber-ink:#3A2705;
+    --good-bg:#D1FAE5;
     --muted:#5b6472;
     --line:#e4e7ee;
     --card:#ffffff;
-    --grad:linear-gradient(120deg,#4f6df5,#8b5cf6);
+    --grad:linear-gradient(120deg,#0E9F6E,#134E4A);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
@@ -64,8 +68,8 @@
   .hero::before{
     content:"";position:absolute;inset:0;
     background:
-      radial-gradient(600px 300px at 85% 20%, rgba(139,92,246,0.22), transparent 70%),
-      radial-gradient(500px 300px at 10% 90%, rgba(79,109,245,0.18), transparent 70%);
+      radial-gradient(600px 300px at 85% 20%, rgba(52,211,153,0.16), transparent 70%),
+      radial-gradient(500px 300px at 10% 90%, rgba(14,159,110,0.14), transparent 70%);
     pointer-events:none;
   }
   .hero .container{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;position:relative;}
@@ -84,7 +88,7 @@
     background:var(--grad);color:#fff;
     padding:14px 28px;border-radius:99px;font-weight:600;text-decoration:none;
     font-size:0.98rem;display:inline-block;
-    box-shadow:0 8px 24px -8px rgba(99,102,241,0.6);
+    box-shadow:0 8px 24px -8px rgba(217,119,6,0.45);
   }
   .btn-secondary{
     border:1px solid rgba(255,255,255,0.25);color:#fff;
@@ -132,7 +136,7 @@
   .photo-wrap{
     width:100%;border-radius:20px;overflow:hidden;
     position:relative;
-    box-shadow:0 16px 40px -16px rgba(79,109,245,0.35);
+    box-shadow:0 16px 40px -16px rgba(14,159,110,0.28);
   }
   .photo-wrap img{width:100%;height:auto;display:block;}
   .photo-wrap::after{
@@ -171,7 +175,7 @@
   .pricing-card{
     background:var(--card);border:1px solid var(--line);
     border-radius:20px;padding:38px;max-width:540px;
-    box-shadow:0 20px 44px -24px rgba(79,109,245,0.28);
+    box-shadow:0 20px 44px -24px rgba(14,159,110,0.22);
     position:relative;
   }
   .pricing-card::before{
@@ -223,7 +227,7 @@
   }
   .register-wrap::before{
     content:"";position:absolute;inset:0;
-    background:radial-gradient(500px 260px at 90% 10%, rgba(139,92,246,0.25), transparent 70%);
+    background:radial-gradient(500px 260px at 90% 10%, rgba(52,211,153,0.18), transparent 70%);
     pointer-events:none;
   }
   .register-wrap > *{position:relative;}
@@ -243,7 +247,7 @@
     grid-column:1/-1;background:var(--grad);color:#fff;border:none;
     padding:16px;border-radius:99px;font-weight:600;font-size:1rem;cursor:pointer;margin-top:6px;
     font-family:'Inter',sans-serif;
-    box-shadow:0 8px 24px -8px rgba(99,102,241,0.55);
+    box-shadow:0 8px 24px -8px rgba(217,119,6,0.4);
   }
   #form-msg{grid-column:1/-1;font-size:0.88rem;font-weight:500;color:var(--teal);}
 
@@ -264,7 +268,7 @@
   }
   .cal-day.blank{visibility:hidden;cursor:default;}
   .cal-day.disabled{color:rgba(255,255,255,0.2);cursor:not-allowed;background:none;}
-  .cal-day.available:hover{background:rgba(79,109,245,0.35);}
+  .cal-day.available:hover{background:rgba(14,159,110,0.28);}
   .cal-day.selected{background:var(--grad);color:#fff;font-weight:600;}
   .selected-date-label{margin-top:10px;font-size:0.85rem;font-weight:500;color:var(--teal);min-height:1.2em;}
 
@@ -279,6 +283,22 @@
     .about-grid{grid-template-columns:1fr;}
     .register-wrap{padding:32px 22px;}
   }
+
+  /* ===== ASCENT palette overrides ===== */
+  .nav-cta,.btn-primary,form button[type=submit],.btn{
+    background:linear-gradient(120deg,#F59E0B,#D97706);
+    color:var(--amber-ink);
+    font-weight:700;
+    box-shadow:0 8px 24px -8px rgba(217,119,6,0.5);
+  }
+  .nav-cta:hover,.btn-primary:hover,form button[type=submit]:hover,.btn:hover{filter:brightness(1.05);}
+  .btn{font-family:'Space Grotesk',sans-serif;font-weight:600;border:none;border-radius:99px;cursor:pointer;display:inline-block;}
+  .eyebrow{color:var(--teal);border-color:rgba(52,211,153,0.4);}
+  .promo-row button{background:var(--navy);}
+  .gc-stats .gc-stat strong{color:var(--teal);}
+  .section-label{color:var(--accent);}
+  .step .num{background:var(--grad);}
+  .choice.picked{border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -298,7 +318,7 @@
 <header class="hero">
   <div class="container">
     <div>
-      <div class="eyebrow">Grades 6–10 · Middle School Math through Geometry</div>
+      <div class="eyebrow">1 of only 8 D.C. BrightSpot Fellows · Grades 6–10</div>
       <h1>Math tutoring that keeps your child <em>constantly elevating.</em></h1>
       <p class="lead">One-on-one virtual sessions over Google Meet with veteran classroom teacher Brother Truth — focused on exactly what your child is stuck on, from middle school math through Geometry. Always on the up and up.</p>
       <div class="btn-row">
@@ -313,8 +333,8 @@
         <svg id="growth-svg" viewBox="0 0 300 160" width="100%">
           <defs>
             <linearGradient id="gradLine" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#4f6df5"/>
-              <stop offset="1" stop-color="#8b5cf6"/>
+              <stop offset="0" stop-color="#34D399"/>
+              <stop offset="1" stop-color="#0E9F6E"/>
             </linearGradient>
           </defs>
           <line class="grid" x1="0" y1="40" x2="300" y2="40"/>
@@ -332,6 +352,18 @@
     </div>
   </div>
 </header>
+
+<div style="background:var(--navy-2);border-top:1px solid rgba(255,255,255,0.06);">
+  <div class="container" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 34px;padding:18px 24px;color:rgba(255,255,255,0.75);font-size:0.85rem;font-weight:600;text-align:center;">
+    <span>20+ Years Teaching</span>
+    <span style="color:var(--teal)">•</span>
+    <span>Ron Brown College Prep</span>
+    <span style="color:var(--teal)">•</span>
+    <span>Morgan State Graduate</span>
+    <span style="color:var(--teal)">•</span>
+    <span>EmpowerK12 BrightSpot Fellow</span>
+  </div>
+</div>
 
 <section id="about">
   <div class="container about-grid">
