@@ -710,7 +710,33 @@ function resultsScreen(){
   emailLines.push("NEXT STEPS:");
   nextSteps.forEach(s => emailLines.push("  → " + s));
 
-  sendReportEmail(state.name, grade, pct, verdict, emailLines.join("\n"));
+  const areaBreakdown = B.areas.map((a,ai)=>({
+    area: a.name,
+    correct: perArea[ai].right,
+    total: perArea[ai].total,
+    level: levelFor(perArea[ai].right, perArea[ai].total).label
+  }));
+  const missedAll = [];
+  B.areas.forEach((a,ai)=>{ perArea[ai].missed.forEach(m=>missedAll.push({area:a.name, question:m})) });
+
+  savePlacementResult({
+    parent_name: regData.parentName,
+    parent_email: regData.parentEmail,
+    student_name: state.name,
+    student_email: regData.studentEmail || null,
+    grade_level: grade,
+    score: total,
+    total_questions: qs.length,
+    percent: pct,
+    verdict: verdict,
+    recommended_sessions_per_week: schedFreq,
+    area_breakdown: areaBreakdown,
+    missed_questions: missedAll,
+    started_at: timerStart ? timerStart.toISOString() : null,
+    completed_at: timerEnd ? timerEnd.toISOString() : null,
+    duration_seconds: getElapsedSeconds(),
+    report_text: emailLines.join("\n")
+  });
 
   screen.innerHTML=`
     <div class="print-head"><h2>Up And Up Educational Services — ${B.title}</h2><p>Student: ${state.name} · Date: ${today} · Parent: ${regData.parentName}</p></div>
@@ -754,27 +780,29 @@ function resultsScreen(){
   window.scrollTo({top:0,behavior:"instant"});
 }
 
-async function sendReportEmail(studentName, gradeLevel, pct, verdict, reportText){
+const SAVE_URL = "https://otdyhyzghaohnhtwzkvu.supabase.co/functions/v1/edu-save-placement";
+
+async function savePlacementResult(payload){
   const statusEl = document.getElementById("email-status");
-  if(statusEl) statusEl.textContent = "Sending report to Brother Truth...";
+  if(statusEl) statusEl.textContent = "Saving results and sending report...";
   try {
-    const resp = await fetch(APPS_SCRIPT_URL, {
+    const resp = await fetch(SAVE_URL, {
       method: "POST",
-      mode: "no-cors",
-      headers: {"Content-Type": "text/plain;charset=utf-8"},
-      body: JSON.stringify({
-        action: "assessmentReport",
-        studentName: studentName,
-        gradeLevel: gradeLevel,
-        score: pct,
-        verdict: verdict,
-        report: reportText
-      })
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload)
     });
-    if(statusEl) statusEl.textContent = "✓ Report sent to Brother Truth";
+    const data = await resp.json();
+    if(resp.ok && data.status === "saved"){
+      if(statusEl) statusEl.textContent = data.email_sent
+        ? "\u2713 Results saved and report sent to Brother Truth"
+        : "\u2713 Results saved \u2014 report delivery pending";
+    } else {
+      if(statusEl) statusEl.textContent = "Results recorded locally \u2014 please screenshot this page.";
+      console.error("Save failed:", data);
+    }
   } catch(e){
-    console.error("Email send failed:", e);
-    if(statusEl) statusEl.textContent = "";
+    console.error("Save failed:", e);
+    if(statusEl) statusEl.textContent = "Couldn't reach the server \u2014 please screenshot this page.";
   }
 }
 
